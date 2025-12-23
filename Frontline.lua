@@ -32,42 +32,58 @@ local SpawnGadutaSupply = MENU_MISSION_COMMAND:New("Spawn Gaduta Supply", SpawnM
 -- Gaduta Statics
 function GadutaStatics()
     GdutaStaticTable = STATIC:FindAllByMatching("Gaduta%-Static")
-    
-    GadutaAlive = {table.unpack(GdutaStaticTable)}
 
-    MESSAGE:New(tostring(#GadutaAlive), 25, "Info"):ToAll()
-    
+    GadutaAlive = {}
+
     for i = 1, #GdutaStaticTable do
-        Static = GdutaStaticTable[i]
-        Static:HandleEvent(EVENTS.Dead)
+        table.insert(GadutaAlive, GdutaStaticTable[i]:GetName())
     end
 
-    function Static:OnEventDead(EventData)
-        for i = 1, #GadutaAlive do
-            if GadutaAlive[i]:IsAlive() == false then
-                table.remove(GadutaAlive, i)
-            
-                if #GadutaAlive == 0 then
-                    MESSAGE:New("All Units Dead", 25, "Info"):ToAll()
-                    MESSAGE:New(tostring(#GdutaStaticTable), 25, "Info"):ToAll()
-                    RespawnStatics()
-                end
-            end
+    GadutaStatic = GdutaStaticTable[1]
+    GadutaStatic:HandleEvent(EVENTS.Dead)
+
+    function RespawnStatics()
+        for i = 1, #GdutaStaticTable do
+            local respawnStatic = GdutaStaticTable[i]
+            respawnStatic:ReSpawn()
         end
+
+        GdutaStaticTable = {}
+        GadutaAlive = {}
+
+        GdutaStaticTable = STATIC:FindAllByMatching("Gaduta%-Static")
+
+        for i = 1, #GdutaStaticTable do
+            table.insert(GadutaAlive, GdutaStaticTable[i]:GetName())
+        end
+
+        MESSAGE:New("Respawn", 25, "Info"):ToAll()
     end
 
-end
-
-function RespawnStatics()
-    for i = 1, #GdutaStaticTable do
-        local respawnStatic = GdutaStaticTable[i]:GetDCSObject()
-        MESSAGE:New(tostring(respawnStatic), 25, "Info"):ToAll()
-        respawnStatic:ReSpawn()
-    end
-
-    --GdutaStaticTable = {}
-   -- GadutaAlive = {}
-    --GadutaStatics()
 end
 
 GadutaStatics()
+
+function GadutaStatic:OnEventDead(EventData)
+    -- chek for dublicate calls by cheking if unit killed is nill
+    if EventData.IniDCSUnit == nil then
+        MESSAGE:New("misfire", 25, "Info"):ToAll()
+        return
+    end
+    
+    local deadUnit = EventData.IniDCSUnitName
+
+    -- chek if unit killed is part of gaduta statics
+    for iterator = 1, #GadutaAlive do
+        if deadUnit == GadutaAlive[iterator] then
+            table.remove(GadutaAlive, iterator)
+        end
+
+        if #GadutaAlive == 0 then
+            MESSAGE:New("All units in Gaduta are dead.\n Respawn in 10 min", 25, "Info"):ToAll()
+
+            local respawnTimer = SCHEDULER:New()
+            respawnTimer:Schedule(respawnTimer, RespawnStatics, {}, 600) -- Timer in seconds
+        end
+    end
+end
