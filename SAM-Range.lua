@@ -1,10 +1,11 @@
 ActiveSam = nil
+ActiveSR = nil
 
 function ClearRange()
-    if ActiveSam == nil then return end
+        if ActiveSam == nil then return end
     
-    local despawnArmyGroup = ARMYGROUP:New(ActiveSam)
-    despawnArmyGroup:Despawn()
+        local despawnArmyGroup = ARMYGROUP:New(ActiveSam)
+        despawnArmyGroup:Despawn()
 end
 
 local ClearRangeMenu = MENU_MISSION_COMMAND:New("Clear Range", SamRange, ClearRange)
