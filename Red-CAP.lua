@@ -10,6 +10,7 @@ northWinG:AddSquadron("Red-North-CAP-2", "1st Jef SQN North", AIRBASE.Caucasus.M
 northWinG:AddSquadron("Red-North-CAP-3", "1st Su-33 SQN North", AIRBASE.Caucasus.Maykop_Khanskaya, 20, AI.Skill.VETERAN, 202) -- Fox 1 SU-33
 
 northWinG:AddRejectZone(ZONE:New("no-go-zone"))
+northWinG:AddAcceptZone(ZONE:New("RED-WEST"))
 
 -- Center CAP
 local cneterWing = EASYGCICAP:New("Center CAP Operations", AIRBASE.Caucasus.Mineralnye_Vody, "red", "Read-EWR")
@@ -21,6 +22,8 @@ cneterWing:AddSquadron("Red-Center-CAP-1", "1st F1 SQN Center", AIRBASE.Caucasus
 cneterWing:AddSquadron("Red-Center-CAP-2", "2nd 27 SQN Center", AIRBASE.Caucasus.Mineralnye_Vody, 20, AI.Skill.VETERAN, 302) -- Fox 1 Mig-27
 cneterWing:AddSquadron("Red-Center-CAP-3", "1st 23 SQN Center", AIRBASE.Caucasus.Mineralnye_Vody, 20, AI.Skill.VETERAN, 302) -- Fox 1 Mig-23
 
+cneterWing:AddAcceptZone(ZONE:New("RED-CENTER"))
+
 -- South CAP
 local southWing = EASYGCICAP:New("South CAP Operations", AIRBASE.Caucasus.Mozdok, "red", "Read-EWR")
 
@@ -30,3 +33,5 @@ southWing:AddSquadron("Red-South-CAP", "3th SQN Center", AIRBASE.Caucasus.Mozdok
 southWing:AddSquadron("Red-South-CAP-1", "1st 21 SQN Center", AIRBASE.Caucasus.Mozdok, 20, AI.Skill.VETERAN, 402) -- Mig-21
 southWing:AddSquadron("Red-South-CAP-2", "2nd F1 SQN Center", AIRBASE.Caucasus.Mozdok, 20, AI.Skill.VETERAN, 402) -- Mirage F-1EE
 southWing:AddSquadron("Red-South-CAP-3", "2nd 23 SQN Center", AIRBASE.Caucasus.Mozdok, 20, AI.Skill.VETERAN, 402) -- Mig-23
+
+southWing:AddAcceptZone(ZONE:New("RED-EAST"))
